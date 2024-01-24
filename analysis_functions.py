@@ -9,6 +9,7 @@ plot_kde(t_data_crop, save_folder, csv_number, exp_name, fsample, save_figs)
 plot_2d_scatter(t_data_crop, save_folder, csv_number, exp_name, fsample, save_figs))
 plot_psd(t_data_crop, fsample, save_folder, csv_number, exp_name, save_figs)
 analyze_folder(csv_filepath, pixel_size, fsample, save_folder, save_figs)
+
 """
 import os
 import pandas as pd
@@ -119,7 +120,6 @@ def plot_kde(t_data_crop, save_folder, csv_number, exp_name, fsample, save_figs)
 def plot_psd(t_data_crop, fsample, save_folder, csv_number, exp_name, save_figs):
     try:
         binsize = 10
-        t_data_crop.dropna(inplace=True)
         psdtrace_x = t_data_crop['xpos_nm_t']
         psdtrace_y = t_data_crop['ypos_nm_t']
         psdtrace_c0int = t_data_crop['c0int']
@@ -151,12 +151,11 @@ def plot_psd(t_data_crop, fsample, save_folder, csv_number, exp_name, save_figs)
         ax[0].legend(fontsize=8)
         fig.set_size_inches(5, 5)
         plt.tight_layout()
-        plt.show()
 
         if save_figs:
             fig1 = f'{save_folder}{csv_number}_PSD-x.png'
             plt.savefig(fig1)
-            plt.close()
+        plt.close(fig)
 
         fig, ax = psd_y.plot(data_label='Raw Data', fit_label='MLE Fit', data_color='steelblue')
         ax[1].set_xlabel('f (Hz)', fontsize=14, fontweight='bold', labelpad=0.01)
@@ -165,12 +164,11 @@ def plot_psd(t_data_crop, fsample, save_folder, csv_number, exp_name, save_figs)
         ax[0].legend(fontsize=8)
         fig.set_size_inches(5, 5)
         plt.tight_layout()
-        plt.show()
 
         if save_figs:
             fig1 = f'{save_folder}{csv_number}_PSD-y.png'
             plt.savefig(fig1)
-            plt.close()
+        plt.close(fig)
 
         fig, ax = psd_c0int.plot(data_label='Raw Data', fit_label='MLE Fit', data_color='steelblue')
         ax[1].set_xlabel('f (Hz)', fontsize=14, fontweight='bold', labelpad=0.01)
@@ -179,12 +177,11 @@ def plot_psd(t_data_crop, fsample, save_folder, csv_number, exp_name, save_figs)
         ax[0].legend(fontsize=8)
         fig.set_size_inches(5, 5)
         plt.tight_layout()
-        plt.show()
 
         if save_figs:
             fig1 = f'{save_folder}{csv_number}_PSD-c0int.png'
             plt.savefig(fig1)
-            plt.close()
+        plt.close(fig)
 
     except Exception as e:
         print(f"Error processing PSD for {csv_number}: {e}")
